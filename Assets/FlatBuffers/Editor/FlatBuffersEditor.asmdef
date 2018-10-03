@@ -1,0 +1,12 @@
+{
+    "name": "FlatBuffersEditor",
+    "references": [
+        "FlatBuffers"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
