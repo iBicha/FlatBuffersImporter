@@ -17,6 +17,11 @@ namespace FlatBuffers.Editor
         [Tooltip("A folder to save generated scripts to")]
         public DefaultAsset generatedSourcePath;
 
+#if UNITY_EDITOR_WIN
+        private const string k_FlatCompiler = "flatc.exe";
+#else
+        private const string k_FlatCompiler = "flatc";
+#endif
         public override void OnImportAsset(AssetImportContext ctx)
         {
             var schemaFile = Path.GetFullPath(ctx.assetPath);
@@ -30,7 +35,7 @@ namespace FlatBuffers.Editor
 
             var sourceFolder = Path.GetFullPath(AssetDatabase.GetAssetPath(generatedSourcePath));
 
-            var flatcPath = Path.GetFullPath("Assets/FlatBuffers/Editor/Compiler/flatc");
+            var flatcPath = Path.GetFullPath(Path.Combine("Assets/FlatBuffers/Editor/Compiler", k_FlatCompiler));
             var procArgs = "-n \"" + schemaFile + "\" --gen-onefile";
 
             var process = new Process();
