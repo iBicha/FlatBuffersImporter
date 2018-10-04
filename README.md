@@ -11,13 +11,17 @@ Check out the [tutorial](http://google.github.io/flatbuffers/flatbuffers_guide_t
 Current bundled version of the compiler and the .Net scripts is `1.10.0`
 
 ## FlatBuffersImporter
-This repository simplifies the task of generating C# code from `.fbs` files, through a [`ScriptedImporter`](https://docs.unity3d.com/ScriptReference/Experimental.AssetImporters.ScriptedImporter.html)
+This repository simplifies the task of generating C# code from `.fbs` files, through a [`ScriptedImporter`](https://docs.unity3d.com/ScriptReference/Experimental.AssetImporters.ScriptedImporter.html), by triggering the "flat compiler" with the `-n` flag to generate C# files.
+
+
+### Usage
+Add a `.fbs` file to your project (along with `FlatBuffers ` and the importer should automatically generate C# files for you.
 
 The importer will generate a `MySchema.cs` script from your `MySchema.fbs` schema files in the same folder where they are located by default.
+
 You can change the folder for the generated script by selecting the `.fbs` file, and changing the `Generated Source Path` variable in the inspector. You can choose to reimport the asset, or use the `Regenerate code` button in the inspector to trigger C# script generation.
 
-## Usage
-Add a `.fbs` file to your project (along with `FlatBuffers ` and the importer should automatically generate C# files for you.
+
 Check out the example in the `FlatBuffersExample` containing a `MonsterSchema.fbs` file and its corresponding `MonsterSchema.cs` generated script, along side an example scene of how to use it.
 
 ### Contribution
