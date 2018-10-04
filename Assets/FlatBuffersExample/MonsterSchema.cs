@@ -54,10 +54,20 @@ public struct Monster : IFlatbufferObject
   public short Mana { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetShort(o + __p.bb_pos) : (short)150; } }
   public short Hp { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetShort(o + __p.bb_pos) : (short)100; } }
   public string Name { get { int o = __p.__offset(10); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetNameBytes() { return __p.__vector_as_span(10); }
+#else
   public ArraySegment<byte>? GetNameBytes() { return __p.__vector_as_arraysegment(10); }
+#endif
+  public byte[] GetNameArray() { return __p.__vector_as_array<byte>(10); }
   public byte Inventory(int j) { int o = __p.__offset(14); return o != 0 ? __p.bb.Get(__p.__vector(o) + j * 1) : (byte)0; }
   public int InventoryLength { get { int o = __p.__offset(14); return o != 0 ? __p.__vector_len(o) : 0; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetInventoryBytes() { return __p.__vector_as_span(14); }
+#else
   public ArraySegment<byte>? GetInventoryBytes() { return __p.__vector_as_arraysegment(14); }
+#endif
+  public byte[] GetInventoryArray() { return __p.__vector_as_array<byte>(14); }
   public Color Color { get { int o = __p.__offset(16); return o != 0 ? (Color)__p.bb.GetSbyte(o + __p.bb_pos) : Color.Blue; } }
   public Weapon? Weapons(int j) { int o = __p.__offset(18); return o != 0 ? (Weapon?)(new Weapon()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
   public int WeaponsLength { get { int o = __p.__offset(18); return o != 0 ? __p.__vector_len(o) : 0; } }
@@ -73,10 +83,12 @@ public struct Monster : IFlatbufferObject
   public static void AddName(FlatBufferBuilder builder, StringOffset nameOffset) { builder.AddOffset(3, nameOffset.Value, 0); }
   public static void AddInventory(FlatBufferBuilder builder, VectorOffset inventoryOffset) { builder.AddOffset(5, inventoryOffset.Value, 0); }
   public static VectorOffset CreateInventoryVector(FlatBufferBuilder builder, byte[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddByte(data[i]); return builder.EndVector(); }
+  public static VectorOffset CreateInventoryVectorBlock(FlatBufferBuilder builder, byte[] data) { builder.StartVector(1, data.Length, 1); builder.Add(data); return builder.EndVector(); }
   public static void StartInventoryVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
   public static void AddColor(FlatBufferBuilder builder, Color color) { builder.AddSbyte(6, (sbyte)color, 2); }
   public static void AddWeapons(FlatBufferBuilder builder, VectorOffset weaponsOffset) { builder.AddOffset(7, weaponsOffset.Value, 0); }
   public static VectorOffset CreateWeaponsVector(FlatBufferBuilder builder, Offset<Weapon>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreateWeaponsVectorBlock(FlatBufferBuilder builder, Offset<Weapon>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
   public static void StartWeaponsVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static void AddEquippedType(FlatBufferBuilder builder, Equipment equippedType) { builder.AddByte(8, (byte)equippedType, 0); }
   public static void AddEquipped(FlatBufferBuilder builder, int equippedOffset) { builder.AddOffset(9, equippedOffset, 0); }
@@ -100,7 +112,12 @@ public struct Weapon : IFlatbufferObject
   public Weapon __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public string Name { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetNameBytes() { return __p.__vector_as_span(4); }
+#else
   public ArraySegment<byte>? GetNameBytes() { return __p.__vector_as_arraysegment(4); }
+#endif
+  public byte[] GetNameArray() { return __p.__vector_as_array<byte>(4); }
   public short Damage { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetShort(o + __p.bb_pos) : (short)0; } }
 
   public static Offset<Weapon> CreateWeapon(FlatBufferBuilder builder,
