@@ -15,8 +15,5 @@ While the serialisation with FlatBuffers is more explicit and requires more boil
 Add a `.fbs` file to your project (along with `FlatBuffers ` and the importer should automatically generate C# files for you.
 Check out the example in the `FlatBuffersExample` containing a `MonsterSchema.fbs` file and its corresponding `MonsterSchema.cs` generated script, along side an example scene of how to use it.
 
-### Compatibility
-Please note that while the generated code should work on all platforms, compiling `.fbs` automatically only works on Windows, since only the `flatc` Windows compiler is embedded in this repository.
-
 ### Contribution
 Issues/PRs are welcome.
