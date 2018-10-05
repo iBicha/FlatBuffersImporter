@@ -1,3 +1,8 @@
-﻿{
-	"name": "FlatBuffers"
+{
+    "name": "FlatBuffers",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
 }

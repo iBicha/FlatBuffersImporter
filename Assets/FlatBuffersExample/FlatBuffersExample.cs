@@ -16,51 +16,58 @@ public class FlatBuffersExample : MonoBehaviour
 
     private void Load(byte[] bytes)
     {
-    	Debug.Log("Loading Monster from byte array");
-        var buf = new ByteBuffer(bytes);
-        // Get an accessor to the root object inside the buffer.
-        var monster = Monster.GetRootAsMonster(buf);
-        
-        // For C#, unlike most other languages support by FlatBuffers, most values (except for
-        // vectors and unions) are available as propreties instead of asccessor methods.
-        var hp = monster.Hp;
-        var mana = monster.Mana;
-        var Name = monster.Name;
-        
-        Debug.LogFormat("Name: {0}, Hp: {1}, Mana:{2}", Name, hp, mana);
-        
-        var pos = monster.Pos.Value;
-        var x = pos.X;
-        var y = pos.Y;
-        var z = pos.Z;
+        Debug.Log("Loading Monster from byte array");
 
-        Debug.LogFormat("Pos: {0}", new Vector3(x, y, z));
+        //We can use Unity's NativeArray<byte> implementation here.
+        //Activated only when NATIVE_ARRAY_ALLOCATOR symbol is defined
+        //If not, `new ByteBuffer(bytes);` should do.
+        using (var buf = new ByteBuffer(new NativeArrayAllocator(bytes), 0))
+        {
+            // Get an accessor to the root object inside the buffer.
+            var monster = Monster.GetRootAsMonster(buf);
 
-        int invLength = monster.InventoryLength;
-        var thirdItem = monster.Inventory(2);
-        
-        Debug.LogFormat("Inventory Length: {0}, Third Item: {1}", invLength, thirdItem);
-        
-        int weaponsLength = monster.WeaponsLength;
-        var secondWeaponName = monster.Weapons(1).Value.Name;
-        var secondWeaponDamage = monster.Weapons(1).Value.Damage;
+            // For C#, unlike most other languages support by FlatBuffers, most values (except for
+            // vectors and unions) are available as propreties instead of asccessor methods.
+            var hp = monster.Hp;
+            var mana = monster.Mana;
+            var Name = monster.Name;
 
-        Debug.LogFormat("Weapons count: {0}, Second Weapon Name: {1}, Second Weapon Damage: {2}", weaponsLength, secondWeaponName, secondWeaponDamage);
+            Debug.LogFormat("Name: {0}, Hp: {1}, Mana:{2}", Name, hp, mana);
 
-        var unionType = monster.EquippedType;
-        if (unionType == Equipment.Weapon) {
-            var weapon = monster.Equipped<Weapon>().Value;
-            var weaponName = weapon.Name;     // "Axe"
-            var weaponDamage = weapon.Damage; // 5
-            Debug.LogFormat("Equipped Weapon: {0}, Damage: {1}", weaponName, weaponDamage);
+            var pos = monster.Pos.Value;
+            var x = pos.X;
+            var y = pos.Y;
+            var z = pos.Z;
+
+            Debug.LogFormat("Pos: {0}", new Vector3(x, y, z));
+
+            int invLength = monster.InventoryLength;
+            var thirdItem = monster.Inventory(2);
+
+            Debug.LogFormat("Inventory Length: {0}, Third Item: {1}", invLength, thirdItem);
+
+            int weaponsLength = monster.WeaponsLength;
+            var secondWeaponName = monster.Weapons(1).Value.Name;
+            var secondWeaponDamage = monster.Weapons(1).Value.Damage;
+
+            Debug.LogFormat("Weapons count: {0}, Second Weapon Name: {1}, Second Weapon Damage: {2}", weaponsLength,
+                secondWeaponName, secondWeaponDamage);
+
+            var unionType = monster.EquippedType;
+            if (unionType == Equipment.Weapon)
+            {
+                var weapon = monster.Equipped<Weapon>().Value;
+                var weaponName = weapon.Name; // "Axe"
+                var weaponDamage = weapon.Damage; // 5
+                Debug.LogFormat("Equipped Weapon: {0}, Damage: {1}", weaponName, weaponDamage);
+            }
         }
-
     }
 
     private byte[] Save()
     {
         Debug.Log("Creating and saving a Monster to byte array");
-		// Create a `FlatBufferBuilder`, which will be used to create our
+        // Create a `FlatBufferBuilder`, which will be used to create our
         // monsters' FlatBuffers.
         var builder = new FlatBufferBuilder(1024);
 
