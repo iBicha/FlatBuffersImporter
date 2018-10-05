@@ -568,7 +568,8 @@ PlayerSettings:
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: NATIVE_ARRAY_ALLOCATOR;UNSAFE_BYTEBUFFER
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
