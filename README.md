@@ -39,3 +39,7 @@ You can add the following symbols to Unity to enable certain features within Fla
 
 ### Contribution
 Issues/PRs are welcome.
+
+### License
+- The `FlatBuffers` Importer is under MIT.
+- The .Net implementation of `FlatBuffers` and the actual compiler are under Apache 2.0
